@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+    <html>
+        <head>
+            <title>UK Crime</title>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+        </head>
+    <body>
+
+    <style type="text/css">
+             
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+        padding-left: 25%;
+        padding-right: 25%;
+        background-color: #FFF;
+      }
+        
+      .icon-search {
+        height: auto;
+      }
+      
+      .brand {
+            font-family:"Lucida Console", Monaco, monospace;
+        }
+        
+      .fade {
+            background-color: #cbd6da;
+            border-color: #808080;
+            color: #000;
+            border-style: solid;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border-width: 1px;
+            padding: 3px 10px 3px 10px;
+        }
+        
+        .mapbox {
+            border-color: #808080;
+            border-style: solid;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border-width: 1px;
+            padding: 25% 10px 25% 10px;
+        }
+        
+        h4{
+            color: #808080;
+            text-emphasis-color: #000;
+        }
+        
+        .righttext{
+            font-size: x-small;
+            text-align: right;
+        }
+        
+        img {
+        max-width: 10000px;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHmQVjH8q4lAEx6BO9LQ4JLG4wF3wTYrI&sensor=false"></script>
+
+    <script type="text/javascript">
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(53, -3),
+                zoom: 7,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+
+            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+            var marker = new google.maps.Marker({ map: map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
+
+            var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
+            infowindow.open(map,marker);
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+    <div class="navbar">
+        <div class="navbar-inner">
+            <a class="brand" href="#">Crime UK</a>
+            <form class="navbar-search pull-left">
+                <input type="text" class="search-query" placeholder="Search By Postcode">
+            </form>
+            <i class="icon-search" hidden></i>
+            <button class="btn">Search</button>
+        </div>
+    </div>
+
+    <div class="fade in">
+        <button type="button" class="close" data-dismiss="alert">&#x2716;</button>
+        <h4 class="alert-heading">Welcome To Crime UK!</h4>
+        <p>Search for crimes in your area by typing your postcode into the search box.</p>
+    </div>
+
+    <p></p>
+
+    <div class="mapbox" id="map-canvas"></div>
+
+    <p></p>
+
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Crime</th>
+                <th>Description</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Murder</td>
+                <td>It was pretty brutal</td>
+                <td>Derby, UK</td>
+            </tr>
+                    <tr>
+                <td>Murder</td>
+                <td>It was pretty brutal</td>
+                <td>Derby, UK</td>
+            </tr>
+                    <tr>
+                <td>Murder</td>
+                <td>It was pretty brutal</td>
+                <td>Derby, UK</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="righttext">
+        <p><small >This is a website by <a href="http://www.github.com/andy-c-jones">Andrew "AJ" Jones</a>.</small></p>
+    </div>
+
+    <script src="http://code.jquery.com/jquery.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    </body>
+</html>
