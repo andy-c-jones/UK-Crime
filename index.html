@@ -65,21 +65,48 @@
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHmQVjH8q4lAEx6BO9LQ4JLG4wF3wTYrI&sensor=false"></script>
 
     <script type="text/javascript">
-        function initialize() {
-            var mapOptions = {
+        var MapOptions = null;
+        var Map = null;
+        var XMLHttpRequestObject = null;
+
+        function initialise() {
+            MapOptions = {
                 center: new google.maps.LatLng(53, -3),
                 zoom: 7,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
 
-            var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-            var marker = new google.maps.Marker({ map: map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
-
-            var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
-            infowindow.open(map,marker);
+             Map = new google.maps.Map(document.getElementById("map-canvas"), MapOptions);
         }
 
-        google.maps.event.addDomListener(window, 'load', initialize);
+         function getXMLHttpObject()
+        {
+            if (window.XMLHttpRequest)
+            {
+                XMLHttpRequestObject = new XMLHttpRequest();
+            }
+            else if (window.ActiveXObject)
+            {
+                // IE 6 compatibility
+                XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+        }
+
+        function Search() {
+            var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
+
+            var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
+            infowindow.open(Map,marker);
+            
+            for (i = 1; i < 6; i++)
+            {
+                document.getElementById("crime" + i.toString()).innerHTML="test" + i.toString();
+                document.getElementById("desc" + i.toString()).innerHTML="test" + i.toString();
+                document.getElementById("loc" + i.toString()).innerHTML="test" + i.toString();
+            }
+        }
+
+        google.maps.event.addDomListener(window, 'load', initialise);
     </script>
 
     <div class="navbar">
@@ -89,7 +116,7 @@
                 <input type="text" class="search-query" placeholder="Search By Postcode">
             </form>
             <i class="icon-search" hidden></i>
-            <button class="btn">Search</button>
+            <button class="btn" onclick="Search()">Search</button>
         </div>
     </div>
 
@@ -115,19 +142,29 @@
         </thead>
         <tbody>
             <tr>
-                <td>Murder</td>
-                <td>It was pretty brutal</td>
-                <td>Derby, UK</td>
+                <td id="crime1">Murder</td>
+                <td id="desc1">It was pretty brutal</td>
+                <td id="loc1">Derby, UK</td>
             </tr>
                     <tr>
-                <td>Murder</td>
-                <td>It was pretty brutal</td>
-                <td>Derby, UK</td>
+                <td id="crime2">Murder</td>
+                <td id="desc2">It was pretty brutal</td>
+                <td id="loc2">Derby, UK</td>
             </tr>
-                    <tr>
-                <td>Murder</td>
-                <td>It was pretty brutal</td>
-                <td>Derby, UK</td>
+            <tr>
+                <td id="crime3">Murder</td>
+                <td id="desc3">It was pretty brutal</td>
+                <td id="loc3">Derby, UK</td>
+            </tr>
+            <tr>
+                <td id="crime4">Murder</td>
+                <td id="desc4">It was pretty brutal</td>
+                <td id="loc4">Derby, UK</td>
+            </tr>
+            <tr>
+                <td id="crime5">Murder</td>
+                <td id="desc5">It was pretty brutal</td>
+                <td id="loc5">Derby, UK</td>
             </tr>
         </tbody>
     </table>
