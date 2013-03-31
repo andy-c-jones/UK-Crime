@@ -6,68 +6,14 @@
             <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         </head>
     <body>
-
-    <style type="text/css">
-             
-      body {
-        padding-top: 20px;
-        padding-bottom: 60px;
-        padding-left: 25%;
-        padding-right: 25%;
-        background-color: #FFF;
-      }
-        
-      .icon-search {
-        height: auto;
-      }
-      
-      .brand {
-            font-family:"Lucida Console", Monaco, monospace;
-        }
-        
-      .fade {
-            background-color: #cbd6da;
-            border-color: #808080;
-            color: #000;
-            border-style: solid;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-            border-width: 1px;
-            padding: 3px 10px 3px 10px;
-        }
-        
-        .mapbox {
-            border-color: #808080;
-            border-style: solid;
-            -webkit-border-radius: 5px;
-            -moz-border-radius: 5px;
-            border-radius: 5px;
-            border-width: 1px;
-            padding: 25% 10px 25% 10px;
-        }
-        
-        h4{
-            color: #808080;
-            text-emphasis-color: #000;
-        }
-        
-        .righttext{
-            font-size: x-small;
-            text-align: right;
-        }
-        
-        img {
-        max-width: 10000px;
-        }
-    </style>
+    <link rel="StyleSheet" href="crime.css" type="text/css">
 
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCHmQVjH8q4lAEx6BO9LQ4JLG4wF3wTYrI&sensor=false"></script>
 
     <script type="text/javascript">
         var MapOptions = null;
         var Map = null;
-        var XMLHttpRequestObject = null;
+        var HttpRequest = null;
 
         function initialise() {
             MapOptions = {
@@ -77,32 +23,52 @@
             };
 
              Map = new google.maps.Map(document.getElementById("map-canvas"), MapOptions);
+
+            GetXMLHttpObject();
         }
 
-         function getXMLHttpObject()
+         function GetXMLHttpObject()
         {
             if (window.XMLHttpRequest)
             {
-                XMLHttpRequestObject = new XMLHttpRequest();
+                HttpRequest = new XMLHttpRequest();
             }
             else if (window.ActiveXObject)
             {
                 // IE 6 compatibility
-                XMLHttpRequestObject = new ActiveXObject("Microsoft.XMLHTTP");
+                HttpRequest = new ActiveXObject("Microsoft.XMLHTTP");
             }
         }
 
         function Search() {
-            var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
+            HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + document.getElementById("SearchBox").value);
+            HttpRequest.onreadystatechange = FillTable;
+            HttpRequest.send();
 
+            AddMarkers();
+            FillTable();
+        }
+
+        function AddMarkers()
+        {
+            var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
             var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
             infowindow.open(Map,marker);
-            
-            for (i = 1; i < 6; i++)
+        }
+
+        function FillTable()
+        {
+            if (HttpRequest.readyState == 4 && HttpRequest.status == 200)
             {
-                document.getElementById("crime" + i.toString()).innerHTML="test" + i.toString();
-                document.getElementById("desc" + i.toString()).innerHTML="test" + i.toString();
-                document.getElementById("loc" + i.toString()).innerHTML="test" + i.toString();
+                document.getElementById("crimetable").removeAttribute("hidden");
+                var responseText = HttpRequest.responseText;
+                
+                for (i = 1; i < 6; i++)
+                {
+                    document.getElementById("crime" + i.toString()).innerHTML=responseText + i.toString();
+                    document.getElementById("desc" + i.toString()).innerHTML=responseText + i.toString();
+                    document.getElementById("loc" + i.toString()).innerHTML=responseText + i.toString();
+                }
             }
         }
 
@@ -113,7 +79,7 @@
         <div class="navbar-inner">
             <a class="brand" href="#">Crime UK</a>
             <form class="navbar-search pull-left">
-                <input type="text" class="search-query" placeholder="Search By Postcode">
+                <input id="SearchBox" type="text" class="search-query" placeholder="Search By Postcode">
             </form>
             <i class="icon-search" hidden></i>
             <button class="btn" onclick="Search()">Search</button>
@@ -132,7 +98,7 @@
 
     <p></p>
 
-    <table class="table table-bordered table-striped">
+    <table id="crimetable" class="table table-bordered table-striped" hidden>
         <thead>
             <tr>
                 <th>Crime</th>

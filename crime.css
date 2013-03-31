@@ -1,0 +1,51 @@
+      body {
+        padding-top: 20px;
+        padding-bottom: 60px;
+        padding-left: 25%;
+        padding-right: 25%;
+        background-color: #FFF;
+      }
+        
+      .icon-search {
+        height: auto;
+      }
+      
+      .brand {
+            font-family:"Lucida Console", Monaco, monospace;
+        }
+        
+      .fade {
+            background-color: #cbd6da;
+            border-color: #808080;
+            color: #000;
+            border-style: solid;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border-width: 1px;
+            padding: 3px 10px 3px 10px;
+        }
+        
+        .mapbox {
+            border-color: #808080;
+            border-style: solid;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border-width: 1px;
+            padding: 25% 10px 25% 10px;
+        }
+        
+        h4{
+            color: #808080;
+            text-emphasis-color: #000;
+        }
+        
+        .righttext{
+        font-size: x-small;
+    text-align: right;
+}
+    
+img {
+    max-width: 10000px;
+}
