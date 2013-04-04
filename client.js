@@ -45,6 +45,7 @@ function SearchReturned()
         var responseObj = JSON.parse(response);
 
         FillTable(responseObj);
+        AddMarkers(responseObj);
     }
 }
 
@@ -56,8 +57,8 @@ function FillTable(responseObj)
 
         document.getElementById("crime" + i.toString()).innerHTML=crimeInHand["category"];
 
-        var loca = crimeInHand["location"];
-        var street = loca["street"]
+        var location = crimeInHand["location"];
+        var street = location["street"]
         document.getElementById("loc" + i.toString()).innerHTML=street["name"];
 
         document.getElementById("month" + i.toString()).innerHTML=crimeInHand["month"];
@@ -84,9 +85,32 @@ function FillTable(responseObj)
 
 function AddMarkers(responseObj)
 {
-    var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
-    var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
-    infowindow.open(Map,marker);
+    var marker = null;
+    for (i = 0; i < 5; i++)
+    {
+        var crimeInHand = responseObj[i];
+        var location = crimeInHand["location"];
+        if (location != null)
+        {
+            var latitude = location["latitude"];
+            if (latitude != null)
+            {
+                var longitude = location["longitude"];
+                if (longitude != null)
+                {
+                    var number = i + 1;
+                    var numberAsString = number.toString();
+                    var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(latitude, longitude), clickable: true, icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + numberAsString + "|FFFFFF|000000" });
+                }
+            }
+        }
+    }
+
+    if (latitude != null && longitude != null)
+    {
+        Map.panTo(new google.maps.LatLng(latitude, longitude));
+        Map.setZoom(12);
+    }
 }
 
 google.maps.event.addDomListener(window, 'load', initialise);
