@@ -42,34 +42,64 @@
 
         function Search() {
             HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + document.getElementById("SearchBox").value);
-            HttpRequest.onreadystatechange = FillTable;
+            HttpRequest.onreadystatechange = SearchReturned;
             HttpRequest.send();
 
             AddMarkers();
-            FillTable();
         }
 
-        function AddMarkers()
-        {
-            var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
-            var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
-            infowindow.open(Map,marker);
-        }
 
-        function FillTable()
+        function SearchReturned()
         {
             if (HttpRequest.readyState == 4 && HttpRequest.status == 200)
             {
                 document.getElementById("crimetable").removeAttribute("hidden");
-                var responseText = HttpRequest.responseText;
-                
-                for (i = 1; i < 6; i++)
+                var response = HttpRequest.response;
+                var responseObj = JSON.parse(response);
+
+                FillTable(responseObj);
+            }
+        }
+
+        function FillTable(responseObj)
+        {
+            for (i = 0; i < 5; i++)
+            {
+                var crimeInHand = responseObj[i];
+
+                document.getElementById("crime" + i.toString()).innerHTML=crimeInHand["category"];
+
+                var loca = crimeInHand["location"];
+                var street = loca["street"]
+                document.getElementById("loc" + i.toString()).innerHTML=street["name"];
+
+                document.getElementById("month" + i.toString()).innerHTML=crimeInHand["month"];
+                    
+                var outcome = crimeInHand["outcome_status"];
+                if (outcome != null)
                 {
-                    document.getElementById("crime" + i.toString()).innerHTML=responseText + i.toString();
-                    document.getElementById("desc" + i.toString()).innerHTML=responseText + i.toString();
-                    document.getElementById("loc" + i.toString()).innerHTML=responseText + i.toString();
+                    var outcomeCat = outcome["category"];
+                    if (outcomeCat != null)
+                    {
+                        document.getElementById("out" + i.toString()).innerHTML = outcomeCat;
+                    }
+                    else
+                    {
+                        document.getElementById("out" + i.toString()).innerHTML = "No Recorded Outcome";
+                    }
+                }
+                else
+                {
+                    document.getElementById("out" + i.toString()).innerHTML = "No Recorded Outcome";
                 }
             }
+        }
+
+        function AddMarkers(responseObj)
+        {
+            var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(52.9, -2.9), clickable: true });
+            var infowindow = new google.maps.InfoWindow({content:"Hello World!"});
+            infowindow.open(Map,marker);
         }
 
         google.maps.event.addDomListener(window, 'load', initialise);
@@ -101,36 +131,48 @@
     <table id="crimetable" class="table table-bordered table-striped" hidden>
         <thead>
             <tr>
+                <th>#</th>
                 <th>Crime</th>
-                <th>Description</th>
                 <th>Location</th>
+                <th>Date</th>
+                <th>Outcome</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td id="crime1">Murder</td>
-                <td id="desc1">It was pretty brutal</td>
-                <td id="loc1">Derby, UK</td>
-            </tr>
-                    <tr>
-                <td id="crime2">Murder</td>
-                <td id="desc2">It was pretty brutal</td>
-                <td id="loc2">Derby, UK</td>
+                <td>1</td>
+                <td id="crime0"></td>
+                <td id="loc0"></td>
+                <td id="month0"></td>
+                <td id="out0"></td>
             </tr>
             <tr>
-                <td id="crime3">Murder</td>
-                <td id="desc3">It was pretty brutal</td>
-                <td id="loc3">Derby, UK</td>
+                <td>2</td>
+                <td id="crime1"></td>
+                <td id="loc1"></td>
+                <td id="month1"></td>
+                <td id="out1"></td>
             </tr>
             <tr>
-                <td id="crime4">Murder</td>
-                <td id="desc4">It was pretty brutal</td>
-                <td id="loc4">Derby, UK</td>
+                <td>3</td>
+                <td id="crime2"></td>
+                <td id="loc2"></td>
+                <td id="month2"></td>
+                <td id="out2"></td>
             </tr>
             <tr>
-                <td id="crime5">Murder</td>
-                <td id="desc5">It was pretty brutal</td>
-                <td id="loc5">Derby, UK</td>
+                <td>4</td>
+                <td id="crime3"></td>
+                <td id="loc3"></td>
+                <td id="month3"></td>
+                <td id="out3"></td>
+            </tr>
+            <tr>
+                <td>5</td>
+                <td id="crime4"></td>
+                <td id="loc4"></td>
+                <td id="month4"></td>
+                <td id="out4"></td>
             </tr>
         </tbody>
     </table>
