@@ -64,7 +64,13 @@ function SearchReturned()
 
 function FillTable(responseObj)
 {
-    for (i = 0; i < responseObj.length; i++)
+    var loopFor = 5;
+    if(responseObj.length < 5)
+    {
+        loopFor = responseObj.length;
+    }
+
+    for (i = 0; i < loopFor; i++)
     {
         var crimeInHand = responseObj[i];
         if(crimeInHand != null)
@@ -79,7 +85,9 @@ function FillTable(responseObj)
         document.getElementById("loc" + i.toString()).innerHTML=street["name"];
 
         document.getElementById("month" + i.toString()).innerHTML=crimeInHand["month"];
-            
+        
+        document.getElementById("out" + i.toString()).innerHTML = "No Recorded Outcome";
+
         var outcome = crimeInHand["outcome_status"];
         if (outcome != null)
         {
@@ -88,14 +96,6 @@ function FillTable(responseObj)
             {
                 document.getElementById("out" + i.toString()).innerHTML = outcomeCat;
             }
-            else
-            {
-                document.getElementById("out" + i.toString()).innerHTML = "No Recorded Outcome";
-            }
-        }
-        else
-        {
-            document.getElementById("out" + i.toString()).innerHTML = "No Recorded Outcome";
         }
     }
 }
@@ -103,7 +103,14 @@ function FillTable(responseObj)
 function AddMarkers(responseObj)
 {
     var marker = null;
-    for (i = 0; i < responseObj.length; i++)
+    
+    var loopFor = 5;
+    if(responseObj.length < 5)
+    {
+        loopFor = responseObj.length;
+    }
+
+    for (i = 0; i < loopFor; i++)
     {
         var crimeInHand = responseObj[i];
 
