@@ -28,6 +28,9 @@ function initialise() {
 }
 
 function Search() {
+
+   ResetPage();
+
     HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + document.getElementById("SearchBox").value);
     HttpRequest.onreadystatechange = SearchReturned;
     HttpRequest.send();
@@ -35,12 +38,22 @@ function Search() {
     AddMarkers();
 }
 
+function ResetPage()
+{
+    if(!document.getElementById("crimetable").hasAttribute("hidden")) 
+    document.getElementById("crimetable").createAttribute("hidden");
+
+    for (i = 0; i < 5; i++)
+    {
+        if(!document.getElementById("row" + i.toString()).hasAttribute("hidden")) 
+        document.getElementById("row" + i.toString()).createAttribute("hidden");
+    }
+}
 
 function SearchReturned()
 {
     if (HttpRequest.readyState == 4 && HttpRequest.status == 200)
     {
-        document.getElementById("crimetable").removeAttribute("hidden");
         var response = HttpRequest.response;
         var responseObj = JSON.parse(response);
 
@@ -51,10 +64,14 @@ function SearchReturned()
 
 function FillTable(responseObj)
 {
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < responseObj.length; i++)
     {
         var crimeInHand = responseObj[i];
-
+        if(crimeInHand != null)
+        {
+            document.getElementById("crimetable").removeAttribute("hidden");
+            document.getElementById("row" + i.toString()).removeAttribute("hidden");
+        }
         document.getElementById("crime" + i.toString()).innerHTML=crimeInHand["category"];
 
         var location = crimeInHand["location"];
@@ -86,21 +103,31 @@ function FillTable(responseObj)
 function AddMarkers(responseObj)
 {
     var marker = null;
-    for (i = 0; i < 5; i++)
+    for (i = 0; i < responseObj.length; i++)
     {
         var crimeInHand = responseObj[i];
-        var location = crimeInHand["location"];
-        if (location != null)
+
+        if(crimeInHand != null)
         {
-            var latitude = location["latitude"];
-            if (latitude != null)
+            var location = crimeInHand["location"];
+            if (location != null)
             {
-                var longitude = location["longitude"];
-                if (longitude != null)
+                var latitude = location["latitude"];
+                if (latitude != null)
                 {
-                    var number = i + 1;
-                    var numberAsString = number.toString();
-                    var marker = new google.maps.Marker({ map: Map, position: new google.maps.LatLng(latitude, longitude), clickable: true, icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + numberAsString + "|FFFFFF|000000" });
+                    var longitude = location["longitude"];
+                    if (longitude != null)
+                    {
+                        var number = i + 1;
+                        var numberAsString = number.toString();
+                        var marker = new google.maps.Marker(
+                            { 
+                                map: Map, 
+                                position: new google.maps.LatLng(latitude, longitude), 
+                                clickable: true, 
+                                icon: "http://chart.apis.google.com/chart?chst=d_map_pin_letter&chld=" + numberAsString + "|FFFFFF|000000" 
+                            });
+                    }
                 }
             }
         }
