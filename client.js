@@ -29,8 +29,8 @@ function GetXMLHttpObject()
 
 function Search() {
     Initialise();
-
-    HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + document.getElementById("SearchBox").value);
+    var postcode = document.getElementById("SearchBox").value.replace(/\s/g, '');
+    HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + postcode);
     HttpRequest.onreadystatechange = SearchReturned;
     HttpRequest.send();
 
