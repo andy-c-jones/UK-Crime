@@ -30,11 +30,13 @@ function GetXMLHttpObject()
 function Search() {
     Initialise();
     var postcode = document.getElementById("SearchBox").value.replace(/\s/g, '');
-    HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + postcode);
-    HttpRequest.onreadystatechange = SearchReturned;
-    HttpRequest.send();
-
-    AddMarkers();
+    if(postcode.length == 7)
+    {
+        HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + postcode.toUpperCase());
+        HttpRequest.onreadystatechange = SearchReturned;
+        HttpRequest.send();
+        AddMarkers();
+    }
 }
 
 function SearchReturned()
