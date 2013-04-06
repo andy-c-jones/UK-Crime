@@ -30,7 +30,7 @@ function GetXMLHttpObject()
 function Search() {
     Initialise();
     var postcode = document.getElementById("SearchBox").value.replace(/\s/g, '');
-    if(postcode.length == 7)
+    if(postcode.length < 8 && postcode.length > 4 )
     {
         HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + postcode.toUpperCase());
         HttpRequest.onreadystatechange = SearchReturned;
