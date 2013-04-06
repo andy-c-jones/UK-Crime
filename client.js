@@ -2,19 +2,19 @@ var MapOptions = null;
 var Map = null;
 var HttpRequest = null;
 
-function initialise() {
+function Initialise() {
     MapOptions = {
         center: new google.maps.LatLng(53, -3),
         zoom: 7,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     };
 
-     Map = new google.maps.Map(document.getElementById("map-canvas"), MapOptions);
+    Map = new google.maps.Map(document.getElementById("map-canvas"), MapOptions);
 
     GetXMLHttpObject();
 }
 
- function GetXMLHttpObject()
+function GetXMLHttpObject()
 {
     if (window.XMLHttpRequest)
     {
@@ -28,26 +28,13 @@ function initialise() {
 }
 
 function Search() {
-
-   ResetPage();
+    Initialise();
 
     HttpRequest.open("GET", "QueryPoliceAPI.php?location=" + document.getElementById("SearchBox").value);
     HttpRequest.onreadystatechange = SearchReturned;
     HttpRequest.send();
 
     AddMarkers();
-}
-
-function ResetPage()
-{
-    if(!document.getElementById("crimetable").hasAttribute("hidden")) 
-    document.getElementById("crimetable").createAttribute("hidden");
-
-    for (i = 0; i < 5; i++)
-    {
-        if(!document.getElementById("row" + i.toString()).hasAttribute("hidden")) 
-        document.getElementById("row" + i.toString()).createAttribute("hidden");
-    }
 }
 
 function SearchReturned()
@@ -147,4 +134,4 @@ function AddMarkers(responseObj)
     }
 }
 
-google.maps.event.addDomListener(window, 'load', initialise);
+google.maps.event.addDomListener(window, 'load', Initialise);
